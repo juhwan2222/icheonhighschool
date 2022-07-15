@@ -1,9 +1,39 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>테스트</title>
+        <title>이천고등학교 급식</title>
+        <style>
+            .container {
+                text-align: center;
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script>
+            var today = new Date();
+
+            var year = today.getFullYear();
+            var month = ('0' + (today.getMonth() + 1)).slice(-2);
+            var day = ('0' + today.getDate()).slice(-2);
+
+            const nowdate = year + '' + month  + '' + day;
+            const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=dd0bf618d93b4281aba4e251282dc66e&Type=json&pIndex=1&pSize=1&ATPT_OFCDC_SC_CODE=J10&SD_SCHUL_CODE=7530112&MLSV_YMD=${nowdate}`;
+
+            $.ajax({
+                method: "GET",
+                url: url,
+            })
+            .done(function (data) {
+                var lunchMenu = JSON.parse(data).mealServiceDietInfo[1].row[0].DDISH_NM
+
+                const lunch = document.querySelector("#lunch")
+                lunch.innerHTML = lunchMenu
+            });
+        </script>
     </head>
     <body>
-        <h2>이천고등학교</h2>
+        <div class="container">
+            <h2>이천고등학교 급식</h2>
+            <div id="lunch"></div>
+        </div>
     </body>
 </html>
